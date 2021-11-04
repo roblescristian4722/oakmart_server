@@ -18,17 +18,15 @@ $name_table = 'user';
 
 // Conexión con la BD
 $conn = mysqli_connect($hostname, $user_db, $passwor_db, $name_db);
-if (!$conn) {
+if (!$conn)
     die ('Error al conectarse a la base de datos');
-}
 
 // Inserción del usuario
 $query = "INSERT INTO $name_table(username, password, email, phone)
           VALUES ('$username', '$password', '$email', $phone)";
-if (mysqli_query($conn, $query)) {
+if (mysqli_query($conn, $query))
     echo '1';
-} else {
+else
     echo '0';
-}
 mysqli_close($conn);
 ?>

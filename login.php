@@ -1,9 +1,4 @@
 <?php
-ini_set('display_startup_errors', 1);
-ini_set('display_errors', 1);
-error_reporting(-1);
-
-
 // Recibir variables de una app mediante formato POST
 $user = json_decode(file_get_contents('php://input'), true);
 $username = $user["username"];
@@ -21,17 +16,10 @@ $passwor_db = '';
 $name_db = 'oakmart';
 $name_table = 'user';
 
-// Conexión con la BD
-$conn = mysqli_connect($hostname, $user_db, $passwor_db, $name_db) OR DIE;
-if (!$conn) {
-    die ('Error al conectarse a la base de datos');
-}
-
 // Conexión con la base de datos
 $conn = mysqli_connect($hostname, $user_db, $passwor_db, $name_db);
-if (!$conn) {
+if (!$conn)
     die ('Error al conectarse a la base de datos');
-}
 
 // Obtención del usuario
 $query = mysqli_query($conn, "SELECT * FROM $name_table WHERE email='$email'");
