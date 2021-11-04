@@ -1,8 +1,12 @@
 <?php
 // Recibir variables de una app mediante formato POST
 $user = json_decode(file_get_contents('php://input'), true);
-$username = $user["username"];
-$password = password_hash($user["password"], PASSWORD_DEFAULT);
+$username = $user['username'];
+$email = $user['email'];
+// Variables opcionales
+$phone = !empty($user['phone']) ? '\'' . $user['phone'] . '\'' : 'NULL';
+// Hasheo de contraseña
+$password = password_hash($user['password'], PASSWORD_DEFAULT);
 
 // Credenciales de autenticación para la base de datos
 // TODO: Cambiarlas una vez que suba el código al 000webhost
@@ -18,11 +22,11 @@ if (!$conn) {
 }
 
 // Inserción del usuario
-$query = "INSERT INTO user(username, password) VALUES ('$username', '$password')";
+$query = "INSERT INTO user(username, password, email, phone) VALUES ('$username', '$password', '$email', $phone)";
 if (mysqli_query($conn, $query)) {
-    echo "1";
+    echo '1';
 } else {
-    echo "0";
+    echo '0';
 }
 mysqli_close($conn);
 ?>
