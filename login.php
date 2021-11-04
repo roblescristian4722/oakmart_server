@@ -1,4 +1,5 @@
 <?php
+require('auth.php');
 // Recibir variables de una app mediante formato POST
 $user = json_decode(file_get_contents('php://input'), true);
 $username = $user["username"];
@@ -45,4 +46,12 @@ if (mysqli_num_rows($query) == 1) {
 } else
     echo '0';
 mysqli_close($conn);
+
+$user = array(
+    'id' => $data[0]['id'],
+    'username' => $data[0]['username']
+);
+
+// Creación de la sesión del usuario
+Auth::authenticate($user);
 ?>

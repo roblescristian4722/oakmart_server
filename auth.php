@@ -1,9 +1,9 @@
 <?php
 class Auth{
     // Nombre de la cookie que almacenará la sesión del usuario
-    private $cookie_name = '__USER__';
+    static private $cookie_name = '__USER__';
 
-    public function authenticate($user) {
+    static public function authenticate($user) {
         if (empty($user)) {
             throw new Exception("Fallo de autenticación: usuario vacío");
         }
@@ -13,32 +13,32 @@ class Auth{
         (object)[
             "id" => $user["id"],
             "username" => $user["username"],
-            "token" => $this->getToken($user),
+            "token" => self::getToken($user),
         ]);
-        setcookie($this->cookie_name, $session);
+        setcookie(self::$cookie_name, $session);
     }
 
-    public function logout() {
-        unset($_COOKIE[$this->cookie_name]);
-        setcookie($this->cookie_name, null, -1);
+    static public function logout() {
+        unset($_COOKIE[self::$cookie_name]);
+        setcookie(self::$cookie_name, null, -1);
     }
 
-    public function isAuthenticated($user): bool {
-        if (empty($_COOKIE[$this->cookie_name]))
+    static public function isAuthenticated($user): bool {
+        if (empty($_COOKIE[self::$cookie_name]))
             return false;
-        $session = json_decode($_COOKIE[$this->cookie_name], true);
-        if ($session["token"] == $this->getToken($user))
+        $session = json_decode($_COOKIE[self::$cookie_name], true);
+        if ($session["token"] == self::getToken($user))
             return true;
         return false;
     }
 
-    public function getUser($user) {
-        if ($this->isAuthenticated($user))
-            return json_decode($_COOKIE[$this->cookie_name], true);
+    static public function getUser($user) {
+        if (self::isAuthenticated($user))
+            return json_decode($_COOKIE[self::$cookie_name], true);
         return null;
     }
 
-    private function getToken($user): string {
+    static private function getToken($user): string {
         return sha1($user["id"] . $user["username"] . $_SERVER['HTTP_USER_AGENT']);
     }
 }
