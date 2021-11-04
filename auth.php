@@ -1,29 +1,39 @@
 <?php
 class Auth{
     // Nombre de la cookie que almacenará la sesión del usuario
-    const COOKIE_NAME = '__USER__';
-    // Tiempo en minutos que estará activa la sesión del usuario
-    private $time = 30;
+    private $cookie_name = '__USER__';
 
-
-    public function authenticate(object $user) {
-        if (is_object($user))
-            throw new Exception("Fallo de autenticación: no es un objeto");
-        else if (empty($user))
+    public function authenticate($user) {
+        if (empty($user)) {
             throw new Exception("Fallo de autenticación: usuario vacío");
+        }
         // Se crea un objeto de tipo JSON para guardar los datos del usuario como
         // valor de la cookie
-        $json_value = json_encode((object)[
-            'id' => $user->id,
-            'username' => $user->username,
-            'token' => $this->genToken($user->id . $user->username),
+        $session = json_encode(
+        (object)[
+            "id" => $user["id"],
+            "username" => $user["username"],
+            "token" => $this->getToken($user),
         ]);
-        setcookie($this->COOKIE_NAME, $json_value, time() + (60 * $this->time));
+        setcookie($this->cookie_name, $session);
     }
 
-    // Toma una "semilla" como parámetro (id + usuario) y retorna un token
-    private function genToken(string $seed): string {
-        return sha1((string)rand() . $seed);
+    public function logout() {
+        unset($_COOKIE[$this->cookie_name]);
+        setcookie($this->cookie_name, null, -1);
+    }
+
+    public function isAuthenticated($user): bool {
+        if (empty($_COOKIE[$this->cookie_name]))
+            return false;
+        $session = json_decode($_COOKIE[$this->cookie_name], true);
+        if ($session["token"] == $this->getToken($user))
+            return true;
+        return false;
+    }
+
+    private function getToken($user): string {
+        return sha1($user["id"] . $user["username"] . $_SERVER['HTTP_USER_AGENT']);
     }
 }
 ?>
