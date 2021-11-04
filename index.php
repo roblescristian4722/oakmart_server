@@ -1,8 +1,11 @@
 <?php
 require("auth.php");
+require("login.php");
 $auth = new Auth();
 $user = json_decode(file_get_contents('php://input'), true);
-$auth->authenticate($user);
-// $auth->logout();
-echo $auth->isAuthenticated($user) == true ? "auténticado" : "no autenticado";
+if ($auth->isAuthenticated($user)) {
+    // TODO: main page
+} else {
+    // TODO: call login
+}
 ?>

@@ -32,6 +32,12 @@ class Auth{
         return false;
     }
 
+    public function getUser($user) {
+        if ($this->isAuthenticated($user))
+            return json_decode($_COOKIE[$this->cookie_name], true);
+        return null;
+    }
+
     private function getToken($user): string {
         return sha1($user["id"] . $user["username"] . $_SERVER['HTTP_USER_AGENT']);
     }
