@@ -18,27 +18,29 @@ $name_db = 'oakmart';
 $name_table = 'user';
 
 // Conexión con la base de datos
-$conn = mysqli_connect($hostname, $user_db, $passwor_db, $name_db);
+$conn = mysqli_connect($hostname_db, $user_db, $passwor_db, $name_db);
 if (!$conn)
     die ('Error al conectarse a la base de datos');
 
 // Obtención del usuario
 $query = mysqli_query($conn, "SELECT * FROM $name_table WHERE email='$email'");
-$data = array();
+$password = '';
 // Si el correo se encontró
 if (mysqli_num_rows($query) == 1) {
-    while ($row = mysqli_fetch_assoc($query)) {
-        $data[] = array(
-            'id' => $row['id'],
-            'username' => $row['username'],
-            'password' => $row['password'],
-            'email' => $row['email'],
-            'phone' => $row['phone']
-        );
-    }
+    $row = mysqli_fetch_assoc($query);
+    $password = $row['password'];
+    $data = array(
+        'id' => $row['id'],
+        'username' => $row['username'],
+        'email' => $row['email'],
+        'phone' => $row['phone'],
+    );
     // Si la contraseña es correcta
-    if (password_verify($user['password'], $data[0]['password']))
+    if (password_verify($user['password'], $password)) {
+        // Creación de la sesión del usuario
+        Auth::authenticate($data);
         echo json_encode($data);
+    }
     // Si la contraseña es incorrecta
     else
         echo '0';
@@ -51,7 +53,4 @@ $user = array(
     'id' => $data[0]['id'],
     'username' => $data[0]['username']
 );
-
-// Creación de la sesión del usuario
-Auth::authenticate($user);
 ?>

@@ -3,6 +3,7 @@ CREATE TABLE user(
     username VARCHAR(150) NOT NULL,
     password VARCHAR(256) NOT NULL,
     email VARCHAR(256) UNIQUE NOT NULL,
+    token VARCHAR(256),
     phone VARCHAR(15),
     PRIMARY KEY (id)
 );
