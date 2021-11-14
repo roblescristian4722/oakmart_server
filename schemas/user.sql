@@ -5,5 +5,6 @@ CREATE TABLE user(
     email VARCHAR(256) UNIQUE NOT NULL,
     token VARCHAR(256),
     phone VARCHAR(15),
+    image VARCHAR(256),
     PRIMARY KEY (id)
 );

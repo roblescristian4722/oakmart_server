@@ -4,12 +4,14 @@ require('auth.php');
 $user = json_decode(file_get_contents('php://input'), true);
 $username = $user["username"];
 $password = password_hash($user["password"], PASSWORD_DEFAULT);
-
-// Credenciales de autenticación para la base de datos
-$user = json_decode(file_get_contents('php://input'), true);
-$username = $user['username'];
 $email = $user['email'];
 
+if (empty($password) || empty($email)) {
+    echo '0';
+    die('Datos no válidos');
+}
+
+// Credenciales de autenticación para la base de datos
 // TODO: Cambiarlas una vez que suba el código al 000webhost
 $hostname_db = 'localhost';
 $user_db = 'kristo';
@@ -25,6 +27,7 @@ if (!$conn)
 // Obtención del usuario
 $query = mysqli_query($conn, "SELECT * FROM $name_table WHERE email='$email'");
 $password = '';
+$data = array();
 // Si el correo se encontró
 if (mysqli_num_rows($query) == 1) {
     $row = mysqli_fetch_assoc($query);
