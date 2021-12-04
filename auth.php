@@ -1,15 +1,13 @@
 <?php
-// ini_set('display_errors', 1);
-// ini_set('display_startup_errors', 1);
-// error_reporting(E_ERROR);
 class Auth{
     static private function petition($query) {
+        // credenciales de autentificación del server bd
         $hostname_db = 'localhost';
-        $user_db = 'kristo';
-        $passwor_db = '';
-        $name_db = 'oakmart';
+        $user_db = 'id17509552_cristian2';
+        $password_db = '?DjX_S<l8-Qbtare';
+        $name_db = 'id17509552_oakmart';
 
-        $conn = mysqli_connect($hostname_db, $user_db, $passwor_db, $name_db);
+        $conn = mysqli_connect($hostname_db, $user_db, $password_db, $name_db);
         if (!$conn)
             die ('Error al conectarse a la base de datos');
         $res = mysqli_query($conn, $query);

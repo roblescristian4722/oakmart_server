@@ -1,8 +1,8 @@
 <?php
+error_reporting(E_ERROR | E_PARSE); // Inhabilita las warnings
 require('auth.php');
 // Recibir variables de una app mediante formato POST
 $user = json_decode(file_get_contents('php://input'), true);
-$username = $user["username"];
 $password = password_hash($user["password"], PASSWORD_DEFAULT);
 $email = $user['email'];
 
@@ -13,14 +13,15 @@ if (empty($password) || empty($email)) {
 
 // Credenciales de autenticación para la base de datos
 // TODO: Cambiarlas una vez que suba el código al 000webhost
+    // credenciales de autentificación del server bd
 $hostname_db = 'localhost';
-$user_db = 'kristo';
-$passwor_db = '';
-$name_db = 'oakmart';
+$user_db = 'id17509552_cristian2';
+$password_db = '?DjX_S<l8-Qbtare';
+$name_db = 'id17509552_oakmart';
 $name_table = 'user';
 
 // Conexión con la base de datos
-$conn = mysqli_connect($hostname_db, $user_db, $passwor_db, $name_db);
+$conn = mysqli_connect($hostname_db, $user_db, $password_db, $name_db);
 if (!$conn)
     die ('Error al conectarse a la base de datos');
 

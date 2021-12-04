@@ -6,6 +6,7 @@ CREATE TABLE product(
     description VARCHAR(2000) NOT NULL,
     price FLOAT NOT NULL,
     location VARCHAR(400) NOT NULL,
+    rating FLOAT DEFAULT 0,
 
     user_id INT UNSIGNED NOT NULL,
     
